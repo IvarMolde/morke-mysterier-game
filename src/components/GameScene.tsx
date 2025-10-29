@@ -60,13 +60,13 @@ const scenes: Record<string, Scene> = {
   doorTask: {
     id: "doorTask",
     title: "Ved døren",
-    text: "Du står ved døren. På døren er det et tegn. Det står: 'Bare de modige kan komme inn.' Du må svare: Hva betyr 'modig'?",
+    text: "Du står ved døren. På døren er det et skilt. Det står: 'Bare de modige kan komme inn.' Du må svare: Hva betyr 'modig'?",
     image: warehouseImage,
     question: "Hva betyr 'modig'?",
     choices: [
-      { text: "Brave (ikke redd)", nextScene: "inside", points: 15, correctAnswer: true },
-      { text: "Tired (trøtt)", nextScene: "inside", points: 0, correctAnswer: false },
-      { text: "Hungry (sulten)", nextScene: "inside", points: 0, correctAnswer: false }
+      { text: "En som ikke er redd", nextScene: "inside", points: 15, correctAnswer: true },
+      { text: "En som er trøtt", nextScene: "inside", points: 0, correctAnswer: false },
+      { text: "En som er sulten", nextScene: "inside", points: 0, correctAnswer: false }
     ]
   },
   inside: {
@@ -119,7 +119,7 @@ const scenes: Record<string, Scene> = {
   bookTask: {
     id: "bookTask",
     title: "Den mystiske boken",
-    text: "Du åpner boken. På første side står: 'Jeg er ___ og jeg trenger hjelp. Finn meg i det mørke smuget.' Hvilket ord mangler?",
+    text: "Du åpner boken. På den første siden står det: 'Jeg er ___ og jeg trenger hjelp. Finn meg i det mørke smuget.' Hvilket ord mangler?",
     image: warehouseImage,
     question: "Hvilket ord passer i setningen?",
     choices: [
@@ -167,11 +167,11 @@ const scenes: Record<string, Scene> = {
     title: "Siste oppgave",
     text: "Stemmen sier: 'Jeg er bak de ___ boksene.' Hvilket ord passer?",
     image: alleyImage,
-    question: "Hvilket ord passer?",
+    question: "Hvilket ord passer i setningen?",
     choices: [
       { text: "store", nextScene: "success", points: 20, correctAnswer: true },
       { text: "liten", nextScene: "success", points: 0, correctAnswer: false },
-      { text: "gul", nextScene: "success", points: 0, correctAnswer: false }
+      { text: "gule", nextScene: "success", points: 0, correctAnswer: false }
     ]
   },
   success: {
