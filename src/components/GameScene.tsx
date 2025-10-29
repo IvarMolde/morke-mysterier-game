@@ -39,11 +39,11 @@ const scenes: Record<string, Scene> = {
     title: "Det gamle lageret",
     text: "Du kommer til lageret. Det er veldig mørkt. Du hører en lyd inne i bygningen. Døren er åpen.",
     image: warehouseImage,
-    question: "Hva betyr 'mørkt'?",
+    question: "Hva ser du i lageret?",
     choices: [
-      { text: "Dark", nextScene: "inside", points: 15, correctAnswer: true },
-      { text: "Light", nextScene: "inside", points: 0, correctAnswer: false },
-      { text: "Loud", nextScene: "inside", points: 0, correctAnswer: false }
+      { text: "Mørke", nextScene: "inside", points: 15, correctAnswer: true },
+      { text: "Lys", nextScene: "inside", points: 0, correctAnswer: false },
+      { text: "Musikk", nextScene: "inside", points: 0, correctAnswer: false }
     ]
   },
   inside: {
@@ -61,11 +61,11 @@ const scenes: Record<string, Scene> = {
     title: "Et mørkt rom",
     text: "Du går inn i rommet. Det ligger noe på gulvet. Det er en gammel bok. På boken står det: 'Mysteriet ligger i smuget'.",
     image: alleyImage,
-    question: "Hva betyr 'bok'?",
+    question: "Hva ligger på gulvet?",
     choices: [
-      { text: "Book", nextScene: "alley", points: 15, correctAnswer: true },
-      { text: "Box", nextScene: "alley", points: 0, correctAnswer: false },
-      { text: "Door", nextScene: "alley", points: 0, correctAnswer: false }
+      { text: "En bok", nextScene: "alley", points: 15, correctAnswer: true },
+      { text: "En boks", nextScene: "alley", points: 0, correctAnswer: false },
+      { text: "En dør", nextScene: "alley", points: 0, correctAnswer: false }
     ]
   },
   alley: {
