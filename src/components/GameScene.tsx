@@ -198,6 +198,7 @@ export default function GameScene() {
   const [currentScene, setCurrentScene] = useState<string>("intro");
   const [score, setScore] = useState(0);
   const [feedback, setFeedback] = useState<string>("");
+  const [attempts, setAttempts] = useState<number>(0);
 
   const scene = scenes[currentScene];
 
@@ -208,19 +209,39 @@ export default function GameScene() {
     if (scene.question && choice.correctAnswer !== undefined) {
       if (choice.correctAnswer) {
         setFeedback("✓ Riktig!");
+        setAttempts(0); // Nullstill forsøk ved riktig svar
+        setTimeout(() => {
+          setFeedback("");
+          setCurrentScene(choice.nextScene);
+        }, 1500);
       } else {
-        setFeedback("✗ Feil svar");
+        const newAttempts = attempts + 1;
+        setAttempts(newAttempts);
+        
+        if (newAttempts >= 2) {
+          // Etter to feil forsøk, gå videre
+          setFeedback("✗ To feil forsøk. Vi går videre...");
+          setTimeout(() => {
+            setFeedback("");
+            setAttempts(0);
+            setCurrentScene(choice.nextScene);
+          }, 2000);
+        } else {
+          // Første feil forsøk - gi en ny sjanse
+          setFeedback(`✗ Feil svar. Du har ett forsøk til!`);
+          setTimeout(() => {
+            setFeedback("");
+          }, 1500);
+        }
       }
-      setTimeout(() => {
-        setFeedback("");
-        setCurrentScene(choice.nextScene);
-      }, 1500);
     } else {
+      setAttempts(0); // Nullstill forsøk når vi bytter scene uten spørsmål
       setCurrentScene(choice.nextScene);
     }
 
     if (choice.nextScene === "intro" && currentScene !== "intro") {
       setScore(0);
+      setAttempts(0);
     }
   };
 
