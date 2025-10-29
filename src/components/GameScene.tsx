@@ -26,12 +26,23 @@ const scenes: Record<string, Scene> = {
   intro: {
     id: "intro",
     title: "En mørk natt",
-    text: "Du er detektiv i en mørk by. Det regner. Du får en telefon. 'Hjelp meg!' sier en stemme. 'Kom til det gamle lageret!' Stemmen stopper. Hva gjør du?",
+    text: "Du er detektiv i en mørk by. Det regner. Du får en telefon. 'Hjelp meg!' sier en stemme. 'Kom til det gamle lageret!' Stemmen stopper.",
+    image: introImage,
+    question: "Hvordan er været?",
+    choices: [
+      { text: "Det regner", nextScene: "weather", points: 10, correctAnswer: true },
+      { text: "Det snør", nextScene: "weather", points: 0, correctAnswer: false },
+      { text: "Det er sol", nextScene: "weather", points: 0, correctAnswer: false }
+    ]
+  },
+  weather: {
+    id: "weather",
+    title: "Du går ut",
+    text: "Riktig! Det regner. Du tar på jakken din. Du går ut i regnet. Gatene er våte. Hva gjør du nå?",
     image: introImage,
     choices: [
       { text: "Gå til lageret", nextScene: "warehouse", points: 10 },
-      { text: "Ring politiet først", nextScene: "police", points: 5 },
-      { text: "Ignorer telefonen", nextScene: "ignore", points: 0 }
+      { text: "Ring politiet først", nextScene: "police", points: 5 }
     ]
   },
   warehouse: {
@@ -39,51 +50,137 @@ const scenes: Record<string, Scene> = {
     title: "Det gamle lageret",
     text: "Du kommer til lageret. Det er veldig mørkt. Du hører en lyd inne i bygningen. Døren er åpen.",
     image: warehouseImage,
-    question: "Hva ser du i lageret?",
+    question: "Hvilken setning er riktig?",
     choices: [
-      { text: "Mørke", nextScene: "inside", points: 15, correctAnswer: true },
-      { text: "Lys", nextScene: "inside", points: 0, correctAnswer: false },
-      { text: "Musikk", nextScene: "inside", points: 0, correctAnswer: false }
+      { text: "Lageret er mørkt", nextScene: "doorTask", points: 15, correctAnswer: true },
+      { text: "Lageret er lyst", nextScene: "doorTask", points: 0, correctAnswer: false },
+      { text: "Lageret er varmt", nextScene: "doorTask", points: 0, correctAnswer: false }
+    ]
+  },
+  doorTask: {
+    id: "doorTask",
+    title: "Ved døren",
+    text: "Du står ved døren. På døren er det et tegn. Det står: 'Bare de modige kan komme inn.' Du må svare: Hva betyr 'modig'?",
+    image: warehouseImage,
+    question: "Hva betyr 'modig'?",
+    choices: [
+      { text: "Brave (ikke redd)", nextScene: "inside", points: 15, correctAnswer: true },
+      { text: "Tired (trøtt)", nextScene: "inside", points: 0, correctAnswer: false },
+      { text: "Hungry (sulten)", nextScene: "inside", points: 0, correctAnswer: false }
     ]
   },
   inside: {
     id: "inside",
     title: "Inne i lageret",
-    text: "Du går inn. Det er kaldt. Du ser skygger på veggen. En dør er åpen til venstre. En trapp går opp til høyre.",
+    text: "Du går inn. Det er kaldt. Du ser skygger på veggen. På gulvet ligger det en lapp. Du leser den.",
     image: warehouseImage,
+    question: "På lappen står: 'Gå til høyre for å finne meg.' Hvor skal du gå?",
     choices: [
-      { text: "Gå til venstre", nextScene: "leftRoom", points: 10 },
-      { text: "Gå opp trappen", nextScene: "upstairs", points: 10 }
+      { text: "Til høyre", nextScene: "rightPath", points: 15, correctAnswer: true },
+      { text: "Til venstre", nextScene: "wrongPath", points: 5, correctAnswer: false },
+      { text: "Rett fram", nextScene: "wrongPath", points: 5, correctAnswer: false }
     ]
   },
-  leftRoom: {
-    id: "leftRoom",
-    title: "Et mørkt rom",
-    text: "Du går inn i rommet. Det ligger noe på gulvet. Det er en gammel bok. På boken står det: 'Mysteriet ligger i smuget'.",
-    image: alleyImage,
-    question: "Hva ligger på gulvet?",
+  rightPath: {
+    id: "rightPath",
+    title: "Den riktige veien",
+    text: "Bra! Du går til høyre. Du finner en trapp. På veggen er det skrevet: 'Det du søker er ___ trappen.' Hvilket ord passer?",
+    image: warehouseImage,
+    question: "Hvilket ord passer i setningen?",
     choices: [
-      { text: "En bok", nextScene: "alley", points: 15, correctAnswer: true },
-      { text: "En boks", nextScene: "alley", points: 0, correctAnswer: false },
-      { text: "En dør", nextScene: "alley", points: 0, correctAnswer: false }
+      { text: "oppe", nextScene: "upstairs", points: 15, correctAnswer: true },
+      { text: "nede", nextScene: "upstairs", points: 0, correctAnswer: false },
+      { text: "utenfor", nextScene: "upstairs", points: 0, correctAnswer: false }
     ]
   },
-  alley: {
-    id: "alley",
-    title: "Smuget",
-    text: "Du går ut og finner smuget. Det er veldig trangt og mørkt. Du ser en skygge bevege seg. Plutselig hører du en stemme: 'Du fant meg! Takk for hjelpen!' En person kommer ut av skyggen. Du løste mysteriet!",
-    image: alleyImage,
+  wrongPath: {
+    id: "wrongPath",
+    title: "Feil vei",
+    text: "Du går feil vei. Det er en blindgate. Du må gå tilbake. Du ser lappen igjen.",
+    image: warehouseImage,
+    question: "Hva skal du gjøre når det står 'til høyre'?",
     choices: [
-      { text: "Spill på nytt", nextScene: "intro", points: 0 }
+      { text: "Gå til høyre", nextScene: "rightPath", points: 10, correctAnswer: true },
+      { text: "Gå til venstre", nextScene: "wrongPath", points: 0, correctAnswer: false }
     ]
   },
   upstairs: {
     id: "upstairs",
-    title: "Ovenpå",
-    text: "Du går opp trappen. Det knirker. Ovenpå er det tomt. Du finner ingenting. Du hører lyden igjen - den kommer fra nede!",
+    title: "Oppe på trappen",
+    text: "Du går opp trappen. Det knirker. Oppe finner du et bord. På bordet ligger en gammel bok.",
     image: warehouseImage,
+    question: "Hva gjorde trappen?",
     choices: [
-      { text: "Gå ned igjen", nextScene: "inside", points: 5 }
+      { text: "Den knirket", nextScene: "bookTask", points: 15, correctAnswer: true },
+      { text: "Den sang", nextScene: "bookTask", points: 0, correctAnswer: false },
+      { text: "Den løp", nextScene: "bookTask", points: 0, correctAnswer: false }
+    ]
+  },
+  bookTask: {
+    id: "bookTask",
+    title: "Den mystiske boken",
+    text: "Du åpner boken. På første side står: 'Jeg er ___ og jeg trenger hjelp. Finn meg i det mørke smuget.' Hvilket ord mangler?",
+    image: warehouseImage,
+    question: "Hvilket ord passer i setningen?",
+    choices: [
+      { text: "redd", nextScene: "bookClue", points: 15, correctAnswer: true },
+      { text: "glad", nextScene: "bookClue", points: 0, correctAnswer: false },
+      { text: "sint", nextScene: "bookClue", points: 0, correctAnswer: false }
+    ]
+  },
+  bookClue: {
+    id: "bookClue",
+    title: "Et hint",
+    text: "Riktig! Personen er redd. I boken er det et bilde av et smug med gatelys. Du må finne smuget!",
+    image: alleyImage,
+    question: "Hvor må du gå?",
+    choices: [
+      { text: "Til smuget", nextScene: "alleyEntrance", points: 15, correctAnswer: true },
+      { text: "Hjem", nextScene: "alleyEntrance", points: 0, correctAnswer: false }
+    ]
+  },
+  alleyEntrance: {
+    id: "alleyEntrance",
+    title: "Utenfor lageret",
+    text: "Du går ut av lageret. Det regner fortsatt. Du ser et smug mellom to bygninger. Det er veldig mørkt der.",
+    image: alleyImage,
+    question: "Hva ser du?",
+    choices: [
+      { text: "Et smug", nextScene: "alleyTask", points: 10, correctAnswer: true },
+      { text: "En butikk", nextScene: "alleyTask", points: 0, correctAnswer: false },
+      { text: "En park", nextScene: "alleyTask", points: 0, correctAnswer: false }
+    ]
+  },
+  alleyTask: {
+    id: "alleyTask",
+    title: "I smuget",
+    text: "Du går inn i smuget. Du hører en lyd. 'Er du her?' spør du. 'Ja! Jeg er her!' svarer en stemme.",
+    image: alleyImage,
+    question: "Hva gjør du?",
+    choices: [
+      { text: "Jeg spør: Hvor er du?", nextScene: "finalTask", points: 15, correctAnswer: true },
+      { text: "Jeg løper bort", nextScene: "finalTask", points: 0, correctAnswer: false }
+    ]
+  },
+  finalTask: {
+    id: "finalTask",
+    title: "Siste oppgave",
+    text: "Stemmen sier: 'Jeg er bak de ___ boksene.' Hvilket ord passer?",
+    image: alleyImage,
+    question: "Hvilket ord passer?",
+    choices: [
+      { text: "store", nextScene: "success", points: 20, correctAnswer: true },
+      { text: "liten", nextScene: "success", points: 0, correctAnswer: false },
+      { text: "gul", nextScene: "success", points: 0, correctAnswer: false }
+    ]
+  },
+  success: {
+    id: "success",
+    title: "Du klarte det!",
+    text: "Du finner personen bak de store boksene! 'Takk for hjelpen! Jeg var så redd,' sier personen. 'Du er en god detektiv!' Du løste mysteriet!",
+    image: alleyImage,
+    choices: [
+      { text: "Spill på nytt", nextScene: "intro", points: 0 }
     ]
   },
   police: {
@@ -95,15 +192,6 @@ const scenes: Record<string, Scene> = {
       { text: "Prøv igjen", nextScene: "intro", points: 0 }
     ]
   },
-  ignore: {
-    id: "ignore",
-    title: "Du ignorerer telefonen",
-    text: "Du går hjem. Neste dag hører du at noen forsvant i natt. Du følte deg dårlig. Du burde ha hjulpet.",
-    image: introImage,
-    choices: [
-      { text: "Prøv igjen", nextScene: "intro", points: 0 }
-    ]
-  }
 };
 
 export default function GameScene() {
