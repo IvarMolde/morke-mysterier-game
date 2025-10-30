@@ -1,10 +1,11 @@
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import introImage from "@/assets/detective-intro.jpg";
 import warehouseImage from "@/assets/warehouse.jpg";
 import alleyImage from "@/assets/alley.jpg";
+import backgroundMusic from "@/assets/background-music.mp3";
 type Choice = {
   text: string;
   nextScene: string;
@@ -324,7 +325,25 @@ export default function GameScene() {
   const [score, setScore] = useState(0);
   const [feedback, setFeedback] = useState<string>("");
   const [attempts, setAttempts] = useState<number>(0);
+  const audioRef = useRef<HTMLAudioElement | null>(null);
   const scene = scenes[currentScene];
+
+  useEffect(() => {
+    // Start bakgrunnsmusikken
+    audioRef.current = new Audio(backgroundMusic);
+    audioRef.current.loop = true;
+    audioRef.current.volume = 0.3;
+    audioRef.current.play().catch(error => {
+      console.log("Audio autoplay prevented:", error);
+    });
+
+    return () => {
+      if (audioRef.current) {
+        audioRef.current.pause();
+        audioRef.current = null;
+      }
+    };
+  }, []);
   const handleChoice = (choice: Choice) => {
     const newScore = score + (choice.points || 0);
     setScore(newScore);
